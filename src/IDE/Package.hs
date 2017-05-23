@@ -1141,6 +1141,8 @@ idePackageFromPath log filePath = do
                             else liftIO . doesFileExist $ dir </> "stack.yaml"
             paths <- liftIO $
                 if useStack
+                -- here a change to find the stack.yaml which is not in the same dir as the cabal file 
+                -- would be necessary 
                     then map (dir </>) . extractStackPackageList <$> T.readFile (dir </> "stack.yaml")
                     else return []
 
