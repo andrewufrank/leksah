@@ -227,7 +227,9 @@ packageConfig'  :: IDEPackage -> (Bool -> IDEAction) -> IDEAction
 packageConfig' package continuation = do
     prefs     <- readIDE prefs
     let dir = ipdPackageDir package
-    useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+    useStack <- if useAlwaysStack prefs 
+        then return True 
+        else liftIO . doesFileExist $ dir </> "stack.yaml"
     if useStack
         then do
             ideMessage Normal (__ "Leksah is not running \"cabal configure\" because a stack.yaml file was found.")
@@ -261,7 +263,9 @@ runCabalBuild backgroundBuild jumpToWarnings withoutLinking package shallConfigu
                      (readPackageDescription normal (ipdCabalFile package))
     let dir =  ipdPackageDir package
         pkgName = ipdPackageName package
-    useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+    useStack <- if useAlwaysStack prefs 
+        then return True 
+        else liftIO . doesFileExist $ dir </> "stack.yaml"
     let flagsForLib = [pkgName <> ":lib:" <> pkgName | ipdHasLibs package && not useStack]
     let flagsForExes =
             if useStack
@@ -366,7 +370,9 @@ packageDoc' backgroundBuild jumpToWarnings package continuation = do
     prefs     <- readIDE prefs
     catchIDE (do
         let dir = ipdPackageDir package
-        useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+        useStack <- if useAlwaysStack prefs 
+            then return True 
+            else liftIO . doesFileExist $ dir </> "stack.yaml"
         projectRoot <- liftIO $ findProjectRoot dir
         runExternalTool' (__ "Documenting") (if useStack then "stack" else "cabal")
             ((if useStack
@@ -393,7 +399,9 @@ packageClean' package continuation = do
     showDefaultLogLaunch'
 
     let dir = ipdPackageDir package
-    useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+    useStack <- if useAlwaysStack prefs 
+        then return True 
+        else liftIO . doesFileExist $ dir </> "stack.yaml"
     runExternalTool' (__ "Cleaning")
                     (if useStack then "stack" else "cabal")
                     ["clean"]
@@ -436,7 +444,9 @@ packageInstall' package continuation = do
 
     catchIDE (do
         let dir = ipdPackageDir package
-        useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+        useStack <- if useAlwaysStack prefs 
+                        then return True 
+                        else liftIO . doesFileExist $ dir </> "stack.yaml"
         runExternalTool' (__ "Installing")
                          (if useStack then "stack" else "echo" {-cabalCommand prefs-})
                          ((if useStack then "install" : ipdBuildFlags package else ["TODO run cabal new-install"]) ++ ipdInstallFlags package)
@@ -492,7 +502,9 @@ packageRun' removeGhcjsFlagIfPresent package =
                 Nothing -> do
                     prefs <- readIDE prefs
                     let dir = ipdPackageDir package
-                    useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+                    useStack <- if useAlwaysStack prefs 
+                                    then return True 
+                                    else liftIO . doesFileExist $ dir </> "stack.yaml"
                     if useStack
                         then
                             IDE.Package.runPackage (addLogLaunchData logName logLaunch)
@@ -634,11 +646,15 @@ packageRunComponent component backgroundBuild jumpToWarnings package shallConfig
                     CTest test -> "test"
                     CBench bench -> "bench"
         dir = ipdPackageDir package
-    useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+--    prefs     <- readIDE prefs
+--    useStack1 <- liftIO . doesFileExist $ dir </> "stack.yaml"
+--    let useStack = useAlwaysStack prefs || useStack1
     logLaunch <- getDefaultLogLaunch
     showDefaultLogLaunch'
     catchIDE (do
         prefs <- readIDE prefs
+        useStack1 <- liftIO . doesFileExist $ dir </> "stack.yaml"
+        let useStack = useAlwaysStack prefs || useStack1
         projectRoot <- liftIO $ findProjectRoot dir
         ghcVersion <- liftIO getDefaultGhcVersion
         packageDBs <- liftIO $ getPackageDBs' ghcVersion dir
@@ -714,7 +730,10 @@ packageOpenDoc = do
     let dir = ipdPackageDir package
         pkgId = packageIdentifierToString $ ipdPackageId package
     projectRoot <- liftIO $ findProjectRoot dir
-    useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+    prefs     <- readIDE prefs
+    useStack <- if useAlwaysStack prefs 
+                    then return True 
+                    else liftIO . doesFileExist $ dir </> "stack.yaml"
     distDir <- if useStack
                         then do
                             --ask stack where its dist directory is
@@ -725,7 +744,7 @@ packageOpenDoc = do
                             liftIO $ takeMVar mvar
                         else return $ projectRoot </> "dist-newstyle/build" </> T.unpack pkgId
     liftIDE $ do
-        prefs   <- readIDE prefs
+--       prefs   <- readIDE prefs
         let path = dir </> distDir
                         </> "doc/html"
                         </> T.unpack (ipdPackageName package)
@@ -1116,7 +1135,10 @@ idePackageFromPath log filePath = do
         Nothing -> return Nothing
         Just rootPackage -> do
             let dir = takeDirectory filePath
-            useStack <- liftIO . doesFileExist $ dir </> "stack.yaml"
+            prefs     <- readIDE prefs
+            useStack <- if useAlwaysStack prefs 
+                            then return True 
+                            else liftIO . doesFileExist $ dir </> "stack.yaml"
             paths <- liftIO $
                 if useStack
                     then map (dir </>) . extractStackPackageList <$> T.readFile (dir </> "stack.yaml")

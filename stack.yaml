@@ -1,99 +1,82 @@
-resolver: lts-8.12
+flags:
+  gi-webkit2:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-gio:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-atk:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-cairo:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-glib:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-gtk:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-gdk:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-gtksource:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-gobject:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-pango:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-soup:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-javascriptcore:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+  gi-gdkpixbuf:
+    overloaded-properties: false
+    overloaded-methods: false
+    overloaded-signals: false
+extra-package-dbs: []
 packages:
 - '.'
-- 'vendor/leksah-server'
-- 'vendor/ltk'
-- 'vendor/haskellVCSGUI/vcsgui'
-#- 'vendor/yi'
-- 'vendor/haskellVCSWrapper/vcswrapper'
+- vendor/leksah-server
+- vendor/ltk
+- vendor/haskellVCSGUI/vcsgui
+- vendor/haskellVCSWrapper/vcswrapper
 - location:
     git: https://github.com/basvandijk/haddock.git
     commit: f4c5e46ded05a4b8884f5ad6f3102f79ff3bb127
   subdirs:
   - haddock-api
-
-# Dependency packages to be pulled from upstream that are not in the resolver
-# (e.g., acme-missiles-0.3)
 extra-deps:
 - binary-shared-0.8.3
-- ghcjs-dom-0.8.0.0
-- ghcjs-dom-jsaddle-0.8.0.0
-- gi-gtk-hs-0.3.4.2
-- gi-gtksource-3.0.13
-- gi-javascriptcore-4.0.12
-- gi-soup-2.4.12
-- gi-webkit2-4.0.12
-- ref-tf-0.4.0.1
-- jsaddle-0.8.3.1
-- jsaddle-dom-0.8.0.0
+- gi-atk-2.0.12
+- gi-cairo-1.0.12
 - gi-gdk-3.0.12
 - gi-gdkpixbuf-2.0.12
+- gi-gio-2.0.12
 - gi-glib-2.0.12
 - gi-gobject-2.0.12
 - gi-gtk-3.0.14
-- gi-cairo-1.0.12
-- gi-gio-2.0.12
+- gi-gtk-hs-0.3.4.2
+- gi-gtksource-3.0.13
+- gi-javascriptcore-4.0.12
 - gi-pango-1.0.13
-- gi-atk-2.0.12
-
-# Override default flag values for local packages and extra-deps
-flags:
-  gi-atk:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-cairo:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-gdk:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-gdkpixbuf:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-gio:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-glib:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-gobject:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-gtk:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-gtk-hs:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-gtksource:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-javascriptcore:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-pango:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-soup:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-  gi-webkit2:
-    overloaded-methods: false
-    overloaded-signals: false
-    overloaded-properties: false
-
-# Extra package databases containing global packages
-extra-package-dbs: []
+- gi-soup-2.4.12
+- gi-webkit2-4.0.12
+resolver: lts-8.12

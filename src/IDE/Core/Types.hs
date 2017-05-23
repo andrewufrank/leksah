@@ -17,6 +17,7 @@
 -- | and all data structures of the state are declared here, to avoid circular
 -- | module dependencies.
 --
+-- added a useAlwaysStack flag in Pref 
 -------------------------------------------------------------------------------
 
 module IDE.Core.Types (
@@ -545,6 +546,7 @@ data Prefs = Prefs {
     ,   retrieveURL         ::   Text
     ,   retrieveStrategy    ::   RetrieveStrategy
     ,   endWithLastConn     ::   Bool
+    ,   useAlwaysStack 	    ::   Bool 
 } deriving(Eq,Show)
 
 candyState :: Prefs -> Bool

@@ -794,6 +794,14 @@ prefsDescription configDir packages = NFDPP [
             boolEditor
             (\i -> return ())
          , mkFieldPP
+            (paraName <<<- ParaName (__ "use Stack build always") $ emptyParams)
+            (PP.text . show)
+            boolParser
+            useAlwaysStack
+            (\b a -> a{useAlwaysStack = b})
+            boolEditor
+            (\i -> return ())
+         , mkFieldPP
             (paraName <<<- ParaName (__ "Don't install last package") $ emptyParams)
             (PP.text . show)
             boolParser
@@ -993,6 +1001,7 @@ defaultPrefs = Prefs {
     ,   showWorkspaceIcons  =   True
     ,   hlintOnSave = True
     ,   collapseErrors = True
+    ,   useAlwaysStack = True 
     }
 
 -- ------------------------------------------------------------
