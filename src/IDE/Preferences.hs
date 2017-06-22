@@ -922,7 +922,7 @@ defaultPrefs = Prefs {
     ,   tabWidth            =   4
     ,   wrapLines           =   False
     ,   sourceCandy         =   (False,"candy")
-    ,   darkUserInterface   = True
+    ,   darkUserInterface   = False  -- change af, my preference
     ,   saveSessionOnClose  = True
     ,   keymapName          =   "keymap"
     ,   forceLineEnds       =   True
@@ -1001,7 +1001,7 @@ defaultPrefs = Prefs {
     ,   showWorkspaceIcons  =   True
     ,   hlintOnSave = True
     ,   collapseErrors = True
-    ,   useAlwaysStack = True 
+    ,   useAlwaysStack = True
     }
 
 -- ------------------------------------------------------------
